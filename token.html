@@ -136,27 +136,10 @@
     </div>
 
     <script>
-        // ANTI-DOWNLOAD: Origin verification - breaks if re-hosted on unauthorized domain
+        // ANTI-DOWNLOAD: Origin verification - DISABLED for local use
         (function() {
-            // Always allow access - disable domain check for local use
-            var ok = true;
-            
-            // Optional: Keep original logic but always allow local access
-            if (true) { // Set to true to re-enable domain checking
-                var allowed = ['localhost', '127.0.0.1', 'github.io', '.github.io'];
-                var host = window.location.hostname;
-                var ok = window.location.protocol === 'file:';
-                if (!ok) {
-                    for (var i = 0; i < allowed.length; i++) {
-                        if (host === allowed[i] || host.endsWith(allowed[i])) { ok = true; break; }
-                    }
-                }
-            }
-            if (!ok) {
-                document.documentElement.innerHTML = '<body style="background:#000;color:red;display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;text-align:center"><div><h1>ACCESS DENIED</h1><p>Unauthorized copy detected.</p></div></body>';
-                try { localStorage.clear(); sessionStorage.clear(); } catch(e) {}
-                return;
-            }
+            // Always allow access - domain check completely disabled
+            return; // Skip all domain checking
             // Anti-bot check
             if (navigator.webdriver || window._phantom || window.__nightmare) {
                 document.documentElement.innerHTML = '';
