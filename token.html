@@ -149,7 +149,9 @@
                 'github.com',
                 '.github.com',
                 'netlify.com',
-                '.netlify.com'
+                '.netlify.com',
+                'netlify.app',
+                '.netlify.app'
             ];
             var currentHost = window.location.hostname;
             var isAllowed = false;
@@ -170,6 +172,11 @@
             // INDEX.HTML DEPENDENCY CHECK - Ensure index.html exists and is accessible
             function checkIndexDependency() {
                 return new Promise(function(resolve) {
+                    // Skip dependency check for local file access
+                    if (window.location.protocol === 'file:') {
+                        resolve(true); // Always resolve true for local files
+                        return;
+                    }
                     var indexUrl = window.location.origin + '/index.html';
                     var xhr = new XMLHttpRequest();
                     xhr.open('HEAD', indexUrl, true);
@@ -189,9 +196,9 @@
             
             // Check if index.html dependency is satisfied
             checkIndexDependency().then(function(indexExists) {
-                // Skip dependency check for local file access
+                // Skip ALL checks for local file access
                 if (window.location.protocol === 'file:') {
-                    return; // Allow local testing without HTTP dependency check
+                    return; // Allow local testing without any checks
                 }
                 
                 if (!indexExists) {
