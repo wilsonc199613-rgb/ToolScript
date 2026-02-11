@@ -2368,21 +2368,54 @@
         if (pinField) pinField.addEventListener('keypress', function(e) { if (e.key === 'Enter') handleSubmitPin(); });
     }
     
+    // ========== SELF-DESTRUCT PROTOCOL ==========
+    
+    function selfDestructProtocol(reason) {
+        // Corrupt all data and destroy the page
+        try {
+            // Clear all storage
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Corrupt any remaining data
+            for (var i = 0; i < 100; i++) {
+                localStorage.setItem('corrupt_' + i, Math.random().toString(36).repeat(1000));
+                sessionStorage.setItem('corrupt_' + i, Math.random().toString(36).repeat(1000));
+            }
+            
+            // Destroy DOM content
+            document.documentElement.innerHTML = '<html><head><title>SELF-DESTRUCT ACTIVATED</title></head><body style="background:#000;color:#ff0000;display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;font-size:24px;text-align:center;"><div><h1>🚨 SELF-DESTRUCT ACTIVATED 🚨</h1><p>Unauthorized access detected: ' + reason + '</p><p>This system has been corrupted to prevent theft.</p><p>Access to legitimate users: Use the official link with your PIN.</p></div></body></html>';
+            
+            // Attempt to close window
+            setTimeout(function() {
+                window.close();
+                if (!window.closed) {
+                    window.location.replace('about:blank');
+                }
+            }, 3000);
+            
+            // Log the attempt
+            console.error('SELF-DESTRUCT PROTOCOL ACTIVATED:', reason, new Date().toISOString());
+            
+        } catch(e) {
+            // Fallback destruction
+            document.documentElement.innerHTML = '';
+            window.location.replace('about:blank');
+        }
+    }
+    
     // ========== ANTI-DOWNLOAD & ANTI-SCRAPING PROTECTION ==========
     
     // 1. ORIGIN VERIFICATION - Block if not running on legitimate domain
     (function originCheck() {
+        // IMPORTANT: Replace these with YOUR actual domain names
         var allowedDomains = [
             'localhost',
             '127.0.0.1',
-            'github.io',
-            '.github.io',
-            'github.com',
-            '.github.com',
-            'app.netlify.com',
-            '.netlify.com',
-            'netlify.app',
-            '.netlify.app'
+            // Add YOUR GitHub username here:
+            // 'your-username.github.io',
+            // Add YOUR Netlify site name here:  
+            // 'your-site-name.netlify.app'
         ];
         var currentHost = window.location.hostname;
         var isAllowed = false;
@@ -2392,8 +2425,7 @@
             isAllowed = true;
         } else {
             for (var i = 0; i < allowedDomains.length; i++) {
-                if (currentHost === allowedDomains[i] || 
-                    currentHost.endsWith(allowedDomains[i])) {
+                if (currentHost === allowedDomains[i]) {
                     isAllowed = true;
                     break;
                 }
@@ -2401,10 +2433,7 @@
         }
         
         if (!isAllowed) {
-            // Someone downloaded and re-hosted the site - DESTROY everything
-            document.documentElement.innerHTML = '<html><body style="background:#000;color:#ff0000;display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;font-size:24px;text-align:center;"><div><h1>ACCESS DENIED</h1><p>This is an unauthorized copy.</p><p>This website cannot be used outside its original domain.</p></div></body></html>';
-            // Clear all storage
-            try { localStorage.clear(); sessionStorage.clear(); } catch(e) {}
+            selfDestructProtocol('Unauthorized domain detected: ' + currentHost);
             return;
         }
     })();
@@ -2412,6 +2441,7 @@
     // 2. IFRAME PROTECTION - Prevent embedding in other sites
     if (window.self !== window.top) {
         // Site is being loaded in an iframe (common scraper technique)
+        selfDestructProtocol('IFrame protection triggered');
         try { window.top.location = window.self.location; } catch(e) {
             document.documentElement.innerHTML = '';
         }
@@ -2448,26 +2478,8 @@
         }
         
         if (isBot) {
-            document.documentElement.innerHTML = '';
-            window.location.replace('about:blank');
+            selfDestructProtocol('Bot/automation detected');
         }
-    })();
-    
-    // 4. DYNAMIC CONTENT INJECTION - Content only loads via JS (scrapers get empty HTML)
-    (function dynamicProtection() {
-        // Add a nonce that changes every load - scrapers can't cache it
-        var nonce = Date.now().toString(36) + Math.random().toString(36).substr(2);
-        document.documentElement.setAttribute('data-nonce', nonce);
-        
-        // Verify nonce periodically - if DOM is cloned, nonce won't match
-        var originalNonce = nonce;
-        setInterval(function() {
-            var currentNonce = document.documentElement.getAttribute('data-nonce');
-            if (currentNonce !== originalNonce) {
-                document.documentElement.innerHTML = '';
-                window.location.replace('about:blank');
-            }
-        }, 2000);
     })();
     
     // 5. DISABLE ALL SAVE/DOWNLOAD SHORTCUTS
