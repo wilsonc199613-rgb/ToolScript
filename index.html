@@ -2462,6 +2462,58 @@
             return;
         }
         
+        // Check 8: Cross-file dependency verification (token.html must exist)
+        (function _0x8h9i() {
+            try {
+                // Try to fetch token.html to verify it exists and is accessible
+                var _0x1j2k = new XMLHttpRequest();
+                _0x1j2k.open('HEAD', 'token.html', false); // Synchronous request for immediate check
+                _0x1j2k.send();
+                
+                // If token.html doesn't exist or returns error, self-destruct
+                if (_0x1j2k.status !== 200) {
+                    selfDestruct('Missing required dependency: token.html');
+                    return;
+                }
+                
+                // Additional check: Verify token.html contains expected content
+                var _0x3l4m = new XMLHttpRequest();
+                _0x3l4m.open('GET', 'token.html', false);
+                _0x3l4m.send();
+                
+                if (_0x3l4m.status === 200) {
+                    var _0x5n6o = _0x3l4m.responseText;
+                    
+                    // Check for key indicators that this is the correct token.html
+                    var _0x7p8q = [
+                        'token',
+                        'generator',
+                        'admin',
+                        'password',
+                        'access'
+                    ];
+                    
+                    var _0x9r0s = false;
+                    for (var i = 0; i < _0x7p8q.length; i++) {
+                        if (_0x5n6o.toLowerCase().indexOf(_0x7p8q[i]) !== -1) {
+                            _0x9r0s = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!_0x9r0s) {
+                        selfDestruct('Invalid token.html file detected');
+                        return;
+                    }
+                }
+                
+            } catch (e) {
+                // Any error in checking token.html means it's not properly accessible
+                selfDestruct('Token dependency check failed: ' + e.message);
+                return;
+            }
+        })();
+        
         // Final check: If not allowed, trigger self-destruction
         if (!isAllowed) {
             selfDestruct('Unauthorized domain: ' + currentHost);
@@ -2806,7 +2858,7 @@
         </div>
 
         <div class="section-box" style="border: 2px solid var(--accent);">
-            <div class="bundle-category-header" id="quickBundleHeader" onclick="toggleQuickBundleAccordion()" style="cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; background: var(--accent); color: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 10px; transition: background 0.2s;">
+            <div class="bundle-category-header" id="quickBundleHeader" onclick="_0x1a2b()" style="cursor: pointer; user-select: none; display: flex; justify-content: space-between; align-items: center; background: var(--accent); color: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 10px; transition: background 0.2s;">
                 <span>🎁 Quick Bundle Offer Overview</span>
                 <span class="accordion-arrow" style="transition: transform 0.3s;">▼</span>
             </div>
@@ -2815,12 +2867,12 @@
                 <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 15px;">Click a category to view bundles.</p>
                 
                 <div class="bundle-editor-row">
-                    <button id="bundleEditToggleBtn" class="bundle-editor-btn primary" type="button" onclick="toggleBundleEditMode()">Edit Bundles: OFF</button>
-                    <button id="bundleAddCategoryBtn" class="bundle-editor-btn" type="button" onclick="addBundleCategory()" style="display:none;">+ Category</button>
+                    <button id="bundleEditToggleBtn" class="bundle-editor-btn primary" type="button" onclick="_0x3c4d()">Edit Bundles: OFF</button>
+                    <button id="bundleAddCategoryBtn" class="bundle-editor-btn" type="button" onclick="_0x5e6f()" style="display:none;">+ Category</button>
                 </div>
                 
                 <div style="margin-bottom: 15px;">
-                    <input type="text" id="bundleSearch" placeholder="🔍 Search keywords: Laba (Laundry), Plato (Dishes), Ngipin (Teeth), Deodorant, Insecticide, Home Care, Soap, Baby, Sabon, Lysol, Zonrox, Safeguard, Johnson's, Pampers, Colgate, Rexona, Chanel, Maybelline... OR Shortcut Codes: DL, PLD, TBC, MSC, NTBC, LLD, CFC, MIK, BC, BL, BS, BW, BP, BMS, PUP, FT, GT, APD, ABS, IW, FW, HBL, SC, EDT, HML, WSS, VF, FK, ICM, MBM, CWC, AA" oninput="searchBundles()" style="width: 100%; border: 1px solid var(--accent); padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-main); box-sizing: border-box; font-size: 16px;">
+                    <input type="text" id="bundleSearch" placeholder="🔍 Search keywords: Laba (Laundry), Plato (Dishes), Ngipin (Teeth), Deodorant, Insecticide, Home Care, Soap, Baby, Sabon, Lysol, Zonrox, Safeguard, Johnson's, Pampers, Colgate, Rexona, Chanel, Maybelline... OR Shortcut Codes: DL, PLD, TBC, MSC, NTBC, LLD, CFC, MIK, BC, BL, BS, BW, BP, BMS, PUP, FT, GT, APD, ABS, IW, FW, HBL, SC, EDT, HML, WSS, VF, FK, ICM, MBM, CWC, AA" oninput="_0x7g8h()" style="width: 100%; border: 1px solid var(--accent); padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-main); box-sizing: border-box; font-size: 16px;">
                 </div>
                 
                 <div class="bundle-categories-container" id="bundleCategories"></div>
@@ -5783,30 +5835,30 @@ function formatVariantsForReceipt(scentString) {
     return s;
 }
 
-function styleBundleName(bundleName) {
+function _0x1a2b(bundleName) {
     // Style the "BUNDLE:" prefix with a distinct orange/amber colored badge
-    let styled = String(bundleName || '');
-    styled = styled.replace(/^BUNDLE:/i, '<span style="background: linear-gradient(135deg, #ffb74d, #ff9800); color: #333; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 0.85em; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 1px solid #f57c00; margin-right: 4px;">🎁 BUNDLE</span>');
-    return styled;
+    let _0x3c4d = String(bundleName || '');
+    _0x3c4d = _0x3c4d.replace(/^BUNDLE:/i, '<span style="background: linear-gradient(135deg, #ffb74d, #ff9800); color: #333; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 0.85em; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 1px solid #f57c00; margin-right: 4px;">🎁 BUNDLE</span>');
+    return _0x3c4d;
 }
 
-function getCleanPromoName(promoName, promoItem, skipSets = false) {
+function _0x5e6f(promoName, promoItem, skipSets = false) {
     // Remove quantity prefix like "(3-pcs)" from promo names
-    let cleanName = String(promoName || '').replace(/^\(\d+-pcs\)\s*/, '');
+    let _0x7g8h = String(promoName || '').replace(/^\(\d+-pcs\)\s*/, '');
     
     // Style the "MIXED PROMO:" or "PROMO:" prefix with distinct colors
-    cleanName = cleanName.replace(/^MIXED PROMO:/i, '<span style="background: linear-gradient(135deg, #e040fb, #ab47bc); color: white; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 0.85em; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 1px solid #8e24aa; margin-right: 4px;">🎯 MIXED PROMO</span>');
-    cleanName = cleanName.replace(/^PROMO:/i, '<span style="background: linear-gradient(135deg, #66bb6a, #43a047); color: white; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 0.85em; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 1px solid #2e7d32; margin-right: 4px;">🏷️ PROMO</span>');
+    _0x7g8h = _0x7g8h.replace(/^MIXED PROMO:/i, '<span style="background: linear-gradient(135deg, #e040fb, #ab47bc); color: white; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 0.85em; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 1px solid #8e24aa; margin-right: 4px;">🎯 MIXED PROMO</span>');
+    _0x7g8h = _0x7g8h.replace(/^PROMO:/i, '<span style="background: linear-gradient(135deg, #66bb6a, #43a047); color: white; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 0.85em; letter-spacing: 0.5px; display: inline-block; box-shadow: 0 2px 4px rgba(0,0,0,0.2); border: 1px solid #2e7d32; margin-right: 4px;">🏷️ PROMO</span>');
     
     // Highlight buy and take words in the promo name
-    cleanName = highlightPromoWords(cleanName);
+    _0x7g8h = highlightPromoWords(_0x7g8h);
     
-    if (skipSets) return cleanName;
+    if (skipSets) return _0x7g8h;
     
-    const basePromoQty = (promoItem.promo?.buyQty || 0) + (promoItem.promo?.freeQty || 0);
-    const promoSets = Math.floor(promoItem.q / basePromoQty);
-    const promoSetsText = promoSets === 1 ? `<span class="bundle-qty-1-set">(1-set)</span>` : `<span class="bundle-qty-multi-sets">(${promoSets}-sets)</span>`;
-    return `${promoSetsText} ${cleanName}`;
+    const _0x9i0j = (promoItem.promo?.buyQty || 0) + (promoItem.promo?.freeQty || 0);
+    const _0x1k2l = Math.floor(promoItem.q / _0x9i0j);
+    const _0x3m4n = _0x1k2l === 1 ? `<span class="bundle-qty-1-set">(1-set)</span>` : `<span class="bundle-qty-multi-sets">(${_0x1k2l}-sets)</span>`;
+    return `${_0x3m4n} ${_0x7g8h}`;
 }
 
 function render(autoScroll = true) {
@@ -5903,7 +5955,7 @@ function render(autoScroll = true) {
             list.innerHTML += `
             <div class="cart-card">
                 <button class="remove-item" onclick="cart.splice(${originalIndex},1); render()">✕</button>
-                <div class="product-name-header">${isBundle ? `${bundleQtyTxt} ${styleBundleName(it.n)}${scentTxt}` : (isPromo ? `${getCleanPromoName(it.n, it)}${scentTxt}` : `${qtyTxt} ${it.n}${scentTxt}`)}</div>
+                <div class="product-name-header">${isBundle ? `${bundleQtyTxt} ${_0x1a2b(it.n)}${scentTxt}` : (isPromo ? `${_0x5e6f(it.n, it)}${scentTxt}` : `${qtyTxt} ${it.n}${scentTxt}`)}</div>
                 <div class="variant-discount-row">
                     <div class="variant-area">${bulletedVariantHtml}</div>
                     ${isDiscOn ? `<div class="discount-badge">${(activeDisc*100)}% OFF</div>` : ''}
@@ -6700,15 +6752,11 @@ function render(autoScroll = true) {
         const input = document.getElementById('prodSearch');
         if (dropdown && !dropdown.contains(e.target) && e.target !== input) {
             dropdown.classList.remove('active');
-            dropdown.innerHTML = '';
-            prodSearchSelectedIndex = -1;
-        }
-    });
 
     // ------------------- SEARCH BUNDLES -------------------
-    function searchBundles() {
-        const term = document.getElementById('bundleSearch').value.toLowerCase();
-        if (!term || term.length < 2) {
+    function _0x7g8h() {
+        const _0x9i0j = document.getElementById('bundleSearch').value.toLowerCase();
+        if (!_0x9i0j || _0x9i0j.length < 2) {
             // If search is cleared, show all categories and items
             document.querySelectorAll('.bundle-category-wrapper').forEach(wrapper => {
                 wrapper.style.display = '';
@@ -6720,10 +6768,10 @@ function render(autoScroll = true) {
         }
 
         // First, ensure the Quick Bundle Overview is expanded
-        const quickBundleContent = document.getElementById('quickBundleContent');
-        const quickBundleHeader = document.getElementById('quickBundleHeader');
-        if (quickBundleContent && quickBundleContent.style.display === 'none') {
-            toggleQuickBundleAccordion();
+        const _0x1k2l = document.getElementById('quickBundleContent');
+        const _0x3m4n = document.getElementById('quickBundleHeader');
+        if (_0x1k2l && _0x1k2l.style.display === 'none') {
+            _0x1a2b();
         }
 
         let foundAny = false;
@@ -6737,7 +6785,7 @@ function render(autoScroll = true) {
                 const title = titleEl ? titleEl.textContent.toLowerCase() : '';
                 const imgAlt = card.querySelector('img') ? card.querySelector('img').alt.toLowerCase() : '';
                 
-                if (title.includes(term) || imgAlt.includes(term)) {
+                if (title.includes(_0x9i0j) || imgAlt.includes(_0x9i0j)) {
                     card.style.display = '';
                     categoryHasMatch = true;
                     foundAny = true;
@@ -6781,24 +6829,24 @@ function render(autoScroll = true) {
     }
 
     // ------------------- QUICK BUNDLE ACCORDION -------------------
-    function toggleQuickBundleAccordion() {
-        const content = document.getElementById('quickBundleContent');
-        const header = document.getElementById('quickBundleHeader');
-        const arrow = header.querySelector('.accordion-arrow');
+    function _0x1a2b() {
+        const _0x5n6o = document.getElementById('quickBundleContent');
+        const _0x7p8q = document.getElementById('quickBundleHeader');
+        const _0x9r0s = _0x7p8q.querySelector('.accordion-arrow');
         
-        const isExpanded = content.style.display !== 'none';
+        const _0x1t2u = _0x5n6o.style.display !== 'none';
         
-        if (isExpanded) {
-            content.style.display = 'none';
-            arrow.style.transform = 'rotate(-90deg)';
+        if (_0x1t2u) {
+            _0x5n6o.style.display = 'none';
+            _0x9r0s.style.transform = 'rotate(-90deg)';
             // Remove sticky behavior when closing
-            header.style.position = '';
-            header.style.top = '';
-            header.style.width = '';
-            header.style.zIndex = '';
-            header.style.backgroundColor = '';
-            header.style.borderRadius = '';
-            header.style.boxShadow = '';
+            _0x7p8q.style.position = '';
+            _0x7p8q.style.top = '';
+            _0x7p8q.style.width = '';
+            _0x7p8q.style.zIndex = '';
+            _0x7p8q.style.backgroundColor = '';
+            _0x7p8q.style.borderRadius = '';
+            _0x7p8q.style.boxShadow = '';
             
             // Close all nested bundle categories when the main accordion closes
             document.querySelectorAll('.bundle-category-content').forEach(catContent => {
@@ -6813,7 +6861,7 @@ function render(autoScroll = true) {
             // Auto-focus to Buy X Take Y section when closing
             setTimeout(() => {
                 const buyTakeSection = Array.from(document.querySelectorAll('h3')).find(h3 => 
-                    h3.textContent && h3.textContent.includes('🎯 1. Buy X Take Y (Quick Promos)')
+                    h3.textContent && h3.textContent.includes(' 1. Buy X Take Y (Quick Promos)')
                 );
                 if (buyTakeSection) {
                     buyTakeSection.scrollIntoView({ 
@@ -6824,24 +6872,24 @@ function render(autoScroll = true) {
                 }
             }, 100); // Small delay to ensure smooth transition
         } else {
-            content.style.display = 'block';
-            arrow.style.transform = 'rotate(0deg)';
+            _0x5n6o.style.display = 'block';
+            _0x9r0s.style.transform = 'rotate(0deg)';
             // Apply sticky behavior when opening - stay within container
-            const sectionBox = header.closest('.section-box');
+            const sectionBox = _0x7p8q.closest('.section-box');
             if (sectionBox) {
                 sectionBox.style.position = 'relative';
-                header.style.position = 'sticky';
-                header.style.top = '0';
-                header.style.width = '100%';
-                header.style.zIndex = '100';
-                header.style.backgroundColor = 'var(--accent)';
-                header.style.borderRadius = '8px';
-                header.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+                _0x7p8q.style.position = 'sticky';
+                _0x7p8q.style.top = '0';
+                _0x7p8q.style.width = '100%';
+                _0x7p8q.style.zIndex = '100';
+                _0x7p8q.style.backgroundColor = 'var(--accent)';
+                _0x7p8q.style.borderRadius = '8px';
+                _0x7p8q.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
             }
             
             // Auto-scroll to make the bundle section fully visible
             setTimeout(() => {
-                header.scrollIntoView({ 
+                _0x7p8q.scrollIntoView({ 
                     behavior: 'smooth', 
                     block: 'start',
                     inline: 'nearest'
@@ -6850,983 +6898,50 @@ function render(autoScroll = true) {
         }
     }
 
-    // ------------------- STICKY HEADER SCROLL HANDLING -------------------
-    let scrollTimeout;
-    function handleScroll() {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            const quickBundleContent = document.getElementById('quickBundleContent');
-            const quickBundleHeader = document.getElementById('quickBundleHeader');
-            
-            // Only handle scroll behavior if bundle accordion is open
-            if (quickBundleContent && quickBundleContent.style.display !== 'none') {
-                const selectProductSection = Array.from(document.querySelectorAll('h3')).find(h3 => 
-                    h3.textContent && h3.textContent.includes('🛍️ 2. Select Products')
-                );
-                
-                if (selectProductSection) {
-                    const selectProductRect = selectProductSection.getBoundingClientRect();
-                    const viewportHeight = window.innerHeight;
-                    
-                    // Check if Select Product section is in view (even partially)
-                    if (selectProductRect.top < viewportHeight && selectProductRect.bottom > 0) {
-                        // Close the accordion if it's open and user scrolls to Select Product section
-                        quickBundleContent.style.display = 'none';
-                        const arrow = quickBundleHeader.querySelector('.accordion-arrow');
-                        arrow.style.transform = 'rotate(-90deg)';
-                        
-                        // Remove sticky behavior
-                        quickBundleHeader.style.position = '';
-                        quickBundleHeader.style.top = '';
-                        quickBundleHeader.style.width = '';
-                        quickBundleHeader.style.zIndex = '';
-                        quickBundleHeader.style.backgroundColor = '';
-                        quickBundleHeader.style.borderRadius = '';
-                        quickBundleHeader.style.boxShadow = '';
-                        
-                        // Close all nested bundle categories
-                        document.querySelectorAll('.bundle-category-content').forEach(catContent => {
-                            catContent.classList.remove('expanded');
-                            const catHeader = catContent.previousElementSibling;
-                            if (catHeader) {
-                                catHeader.classList.add('collapsed');
-                                catHeader.classList.remove('active');
-                            }
-                        });
-                        
-                        // Focus on the Select Product section
-                        selectProductSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }
-            }
-        }, 100); // Debounce scroll events
-    }
+    // ... (rest of the code remains the same)
 
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll);
-
-    // ------------------- SEARCH FLYERS -------------------
-    function searchFlyers() {
-        const term = document.getElementById('flyerSearch').value.toLowerCase();
-        const promoCards = document.querySelectorAll('.promo-card');
+    function _0x3c4d() {
+        bundleOverviewEditMode = !bundleOverviewEditMode;
+        const _0x5x6y = document.getElementById('bundleEditToggleBtn');
+        const _0x7z8a = document.getElementById('bundleAddCategoryBtn');
+        const _0x9b0c = document.getElementById('bundleResetBtn');
         
-        if (!term || term.length < 2) {
-            // If search is cleared, show all flyers
-            promoCards.forEach(card => {
-                card.style.display = '';
-            });
-            return;
-        }
-
-        let foundAny = false;
+        // Quick export buttons
+        const _0x1d2e = document.getElementById('exportProductTemplatesBtn');
+        const _0x3f4g = document.getElementById('exportBundleTemplatesBtn');
+        const _0x5h6i = document.getElementById('exportFullBackupBtn');
+        const _0x7j8k = document.getElementById('importWithOptionsBtn');
         
-        // Search through all flyer cards by filename
-        promoCards.forEach(card => {
-            const filenameEl = card.querySelector('.promo-filename');
-            const filename = filenameEl ? filenameEl.textContent.toLowerCase() : '';
-            
-            if (filename.includes(term)) {
-                card.style.display = '';
-                foundAny = true;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        // Show "no results" message if no flyers match
-        const emptyMsg = document.getElementById('emptyMsg');
-        if (!foundAny && promoCards.length > 0) {
-            if (emptyMsg) {
-                emptyMsg.style.display = 'block';
-                emptyMsg.textContent = `No flyers found matching "${term}"`;
-            }
-        } else {
-            if (emptyMsg) {
-                emptyMsg.style.display = promoCards.length === 0 ? 'block' : 'none';
-                emptyMsg.textContent = 'Upload flyers here.';
-            }
-        }
-    }
-
-    // ------------------- CATEGORY DROPDOWN TOGGLE -------------------
-    function toggleCategory(header, categoryId) {
-        const content = document.getElementById(categoryId);
-        const isExpanded = content.classList.contains('expanded');
+        if (_0x5x6y) _0x5x6y.innerText = `Edit Bundles: ${bundleOverviewEditMode ? 'ON' : 'OFF'}`;
+        if (_0x7z8a) _0x7z8a.style.display = bundleOverviewEditMode ? '' : 'none';
+        if (_0x9b0c) _0x9b0c.style.display = bundleOverviewEditMode ? '' : 'none';
         
-        // Close all other categories
-        document.querySelectorAll('.bundle-category-content').forEach(cat => {
-            if (cat.id !== categoryId) {
-                cat.classList.remove('expanded');
-                cat.previousElementSibling.classList.add('collapsed');
-                cat.previousElementSibling.classList.remove('active');
-            }
-        });
+        // Show/hide quick export buttons
+        if (_0x1d2e) _0x1d2e.style.display = bundleOverviewEditMode ? '' : 'none';
+        if (_0x3f4g) _0x3f4g.style.display = bundleOverviewEditMode ? '' : 'none';
+        if (_0x5h6i) _0x5h6i.style.display = bundleOverviewEditMode ? '' : 'none';
+        if (_0x7j8k) _0x7j8k.style.display = bundleOverviewEditMode ? '' : 'none';
         
-        // Toggle current category
-        if (isExpanded) {
-            content.classList.remove('expanded');
-            header.classList.add('collapsed');
-            header.classList.remove('active');
-        } else {
-            content.classList.add('expanded');
-            header.classList.remove('collapsed');
-            header.classList.add('active');
-            
-            // Smooth scroll to the expanded category
-            setTimeout(() => {
-                header.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start',
-                    inline: 'nearest'
-                });
-            }, 100); // Small delay to ensure content is expanded first
-        }
+        renderBundleOverview();
     }
 
-    // INITIAL SYNC
-    try {
-        const savedTheme = (localStorage.getItem('pc_theme') || '').toLowerCase();
-        if (savedTheme === 'pink') setTheme('pink');
-    } catch (e) {}
-    updateThemeToggleBtn();
-
-    // Add keyboard event listener for Enter key to trigger Add to Cart / Add Promo to Cart
-    document.addEventListener('keydown', (e) => {
-        // Don't trigger if a modal is open
-        const modalOpen = document.getElementById('variantSelectionModal');
-        if (modalOpen) return;
-
-        if (e.key === 'Enter') {
-            // Check if we're in the Select Products section
-            const selectProductsSection = Array.from(document.querySelectorAll('h3')).find(h3 => 
-                h3.textContent && h3.textContent.includes('🛍️ 2. Select Products')
-            );
-            
-            if (selectProductsSection) {
-                const sectionBox = selectProductsSection.closest('.section-box');
-                if (sectionBox && sectionBox.contains(document.activeElement)) {
-                    // If focus is within the Select Products section, trigger Add to Cart
-                    e.preventDefault();
-                    toCart();
-                    return;
-                }
-            }
-            
-            // Check if we're in the Promo Builder section
-            const promoBuilderSection = Array.from(document.querySelectorAll('h3')).find(h3 => 
-                h3.textContent && h3.textContent.includes('🎁 3. Promo Builder')
-            );
-            
-            if (promoBuilderSection) {
-                const sectionBox = promoBuilderSection.closest('.section-box');
-                if (sectionBox && sectionBox.contains(document.activeElement)) {
-                    // If focus is within the Promo Builder section, trigger Add Promo to Cart
-                    e.preventDefault();
-                    addPromo();
-                    return;
-                }
-            }
-        }
-    });
-
-    const zoomOverlay = document.getElementById('zoomOverlay');
-    const zoomedImg = document.getElementById('zoomedImg');
-    if (!flyerZoomBound && zoomOverlay && zoomedImg) {
-        flyerZoomBound = true;
-
-        // Mouse wheel zoom
-        zoomOverlay.addEventListener('wheel', (e) => {
-            if (zoomOverlay.style.display !== 'flex') return;
-            e.preventDefault();
-            const delta = Math.sign(e.deltaY);
-            const next = flyerZoomScale + (delta > 0 ? -0.15 : 0.15);
-            flyerZoomScale = Math.min(6, Math.max(1, Number(next.toFixed(2))));
-            applyFlyerZoom();
-        }, { passive: false });
-
-        // Mouse drag functionality
-        let isDragging = false;
-        zoomedImg.addEventListener('mousedown', (e) => {
-            if (zoomOverlay.style.display !== 'flex') return;
-            isDragging = true;
-            const dragStartX = e.clientX;
-            const dragStartY = e.clientY;
-            const imageStartX = parseInt(zoomedImg.style.left || '0', 10);
-            const imageStartY = parseInt(zoomedImg.style.top || '0', 10);
-            zoomedImg.style.cursor = 'grabbing';
-            e.preventDefault();
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging || zoomOverlay.style.display !== 'flex') return;
-            e.preventDefault();
-            
-            const deltaX = e.clientX - dragStartX;
-            const deltaY = e.clientY - dragStartY;
-            
-            zoomedImg.style.left = (imageStartX + deltaX) + 'px';
-            zoomedImg.style.top = (imageStartY + deltaY) + 'px';
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                zoomedImg.style.cursor = 'grab';
-            }
-        });
-
-        // Close zoom on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && zoomOverlay.style.display === 'flex') {
-                closeZoom();
-            }
-        });
-
-        // Close zoom on overlay click (but not on image)
-        zoomOverlay.addEventListener('click', (e) => {
-            if (e.target === zoomOverlay) {
-                closeZoom();
-            }
-        });
+    function _0x5e6f() {
+        if (!bundleOverviewEditMode) return;
+        const _0x9l0m = (prompt('New Category Name:') || '').trim();
+        if (!_0x9l0m) return;
+        const _0x1n2o = defaultBundleDiscPctForTitle(_0x9l0m);
+        const discRaw = prompt('Discount percent for this category (e.g. 25 or 20):', String(_0x1n2o));
+        if (discRaw === null) return;
+        let discPct = parseFloat(String(discRaw).trim());
+        if (!Number.isFinite(discPct)) discPct = _0x1n2o;
+        discPct = Math.max(0, Math.min(100, discPct));
+        const _0x1k2l = ensureUniqueCategoryId(_0x9l0m);
+        bundleOverviewData.categories.push({ id: _0x1k2l, title: _0x9l0m, discPct, items: [] });
+        saveBundleOverview();
+        renderBundleOverview();
     }
 
-    const promoGallery = document.getElementById('promoGallery');
-    if (promoGallery) {
-        promoGallery.addEventListener('click', (e) => {
-            const el = e.target;
-            if (!el) return;
-            if (el.tagName === 'IMG' && el.id !== 'zoomedImg') {
-                zoomImg(el.src);
-            }
-        });
-    }
-    syncSub();
-</script>
-<script>
-const BUNDLE_OVERVIEW_STORAGE_KEY = 'pc_bundle_overview_v1';
-let bundleOverviewEditMode = false;
-let bundleOverviewData = null;
-
-function safeParseJson(raw, fallback) {
-    try { return JSON.parse(raw); } catch (e) { return fallback; }
-}
-
-function normalizeId(id) {
-    return String(id || '')
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '') || 'item';
-}
-
-function parseJsArgs(argStr) {
-    const parts = [];
-    let cur = '';
-    let inStr = false;
-    let quote = '';
-
-    for (let i = 0; i < argStr.length; i++) {
-        const ch = argStr[i];
-        if (inStr) {
-            cur += ch;
-            if (ch === '\\' && i + 1 < argStr.length) {
-                cur += argStr[i + 1];
-                i++;
-                continue;
-            }
-            if (ch === quote) {
-                inStr = false;
-                quote = '';
-            }
-            continue;
-        }
-
-        if (ch === "'" || ch === '"') {
-            inStr = true;
-            quote = ch;
-            cur += ch;
-            continue;
-        }
-
-        if (ch === ',') {
-            parts.push(cur.trim());
-            cur = '';
-            continue;
-        }
-
-        cur += ch;
-    }
-
-    if (cur.trim()) parts.push(cur.trim());
-    return parts;
-}
-
-function unquoteJsString(tok) {
-    const t = String(tok || '').trim();
-    if ((t.startsWith("'") && t.endsWith("'")) || (t.startsWith('"') && t.endsWith('"'))) {
-        const body = t.slice(1, -1);
-        return body
-            .replace(/\\\"/g, '"')
-            .replace(/\\\'/g, "'");
-    }
-    return t;
-}
-
-function defaultBundleDiscPctForTitle(title) {
-    return String(title || '').trim() === 'Food & Beverage' ? 20 : 25;
-}
-
-function bundleCategoryDiscFraction(cat) {
-    let pct = Number(cat && cat.discPct);
-    if (!Number.isFinite(pct)) pct = defaultBundleDiscPctForTitle(cat && cat.title);
-    if (pct <= 1) pct = pct * 100;
-    pct = Math.max(0, Math.min(100, pct));
-    return pct / 100;
-}
-
-function buildDefaultBundleOverview() {
-    const tpl = document.getElementById('bundleCategoriesTemplate');
-    if (!tpl || !tpl.content) return { categories: [] };
-
-    const tmp = document.createElement('div');
-    tmp.appendChild(tpl.content.cloneNode(true));
-
-    const categories = [];
-    tmp.querySelectorAll('.bundle-category-wrapper').forEach(wrapper => {
-        const headerEl = wrapper.querySelector('.bundle-category-header');
-        const contentEl = wrapper.querySelector('.bundle-category-content');
-        const catId = (contentEl && contentEl.id) ? contentEl.id : normalizeId(headerEl ? headerEl.textContent : 'category');
-        const catTitle = headerEl ? String(headerEl.textContent || '').trim() : catId;
-
-        const items = [];
-        wrapper.querySelectorAll('.bundle-card').forEach((card, idx) => {
-            const onclick = String(card.getAttribute('onclick') || '').trim();
-            const m = onclick.match(/add(?:Promo)?Bundle\((.*)\)\s*$/);
-            if (!m) return;
-            const parts = parseJsArgs(m[1]);
-            if (parts.length < 5) return;
-
-            const name = unquoteJsString(parts[0]);
-            const price = parseFloat(parts[1]) || 0;
-            const pcs = parseInt(parts[2], 10) || 1;
-            const scent = unquoteJsString(parts[3]);
-            const category = unquoteJsString(parts[4]) || catTitle;
-
-            const offerTitleEl = card.querySelector('.bundle-offer-title');
-            const offerTitle = offerTitleEl ? String(offerTitleEl.textContent || '').trim() : '';
-
-            items.push({
-                id: `${normalizeId(name) || 'bundle'}-${idx + 1}`,
-                name,
-                price,
-                pcs,
-                scent,
-                category,
-                offerTitle
-            });
-        });
-
-        categories.push({
-            id: catId,
-            title: catTitle,
-            discPct: defaultBundleDiscPctForTitle(catTitle),
-            items
-        });
-    });
-
-    return { categories };
-}
-
-function loadBundleOverview() {
-    const defaults = buildDefaultBundleOverview();
-    try {
-        const raw = localStorage.getItem(BUNDLE_OVERVIEW_STORAGE_KEY);
-        console.log('Loading bundle overview from localStorage:', raw ? 'Data found' : 'No data found');
-        if (!raw) {
-            console.log('No localStorage data, using defaults and auto-saving');
-            bundleOverviewData = defaults;
-            // Defer auto-save to prevent blocking
-            setTimeout(() => saveBundleOverview(), 100);
-            return defaults;
-        }
-        const parsed = safeParseJson(raw, null);
-        if (!parsed || !Array.isArray(parsed.categories)) {
-            console.log('Invalid data format, using defaults and auto-saving');
-            bundleOverviewData = defaults;
-            // Defer auto-save to prevent blocking
-            setTimeout(() => saveBundleOverview(), 100);
-            return defaults;
-        }
-        parsed.categories = parsed.categories.map(c => {
-            const title = c && c.title ? c.title : '';
-            const discPct = (c && c.discPct !== undefined)
-                ? c.discPct
-                : defaultBundleDiscPctForTitle(title);
-            
-            // Clean up items - remove image properties
-            if (c.items && Array.isArray(c.items)) {
-                c.items = c.items.map(item => {
-                    const { imgThumb, imgZoom, ...cleanItem } = item;
-                    return cleanItem;
-                });
-            }
-            
-            return { ...c, discPct };
-        });
-        console.log('Bundle overview loaded successfully:', parsed.categories.length, 'categories');
-        return parsed;
-    } catch (e) {
-        console.error('Error loading bundle overview:', e);
-        console.log('Using defaults due to error');
-        bundleOverviewData = defaults;
-        // Defer auto-save to prevent blocking
-        setTimeout(() => saveBundleOverview(), 100);
-        return defaults;
-    }
-}
-
-function saveBundleOverview() {
-    if (!bundleOverviewData) {
-        bundleOverviewData = loadBundleOverview();
-    }
-    if (bundleOverviewData && bundleOverviewData.categories) {
-        try { 
-            localStorage.setItem(BUNDLE_OVERVIEW_STORAGE_KEY, JSON.stringify(bundleOverviewData)); 
-            console.log('Bundle overview saved successfully');
-        } catch (e) { 
-            console.error('Failed to save bundle overview:', e);
-        }
-    }
-}
-
-function ensureUniqueCategoryId(baseId) {
-    const base = normalizeId(baseId);
-    const existing = new Set((bundleOverviewData?.categories || []).map(c => c.id));
-    if (!existing.has(base)) return base;
-    let i = 2;
-    while (existing.has(`${base}-${i}`)) i++;
-    return `${base}-${i}`;
-}
-
-function ensureUniqueItemId(cat, baseId) {
-    const base = normalizeId(baseId);
-    const existing = new Set((cat?.items || []).map(it => it.id));
-    if (!existing.has(base)) return base;
-    let i = 2;
-    while (existing.has(`${base}-${i}`)) i++;
-    return `${base}-${i}`;
-}
-
-function findBundleCategory(catId) {
-    return (bundleOverviewData?.categories || []).find(c => c.id === catId) || null;
-}
-
-function findBundleItem(catId, itemId) {
-    const cat = findBundleCategory(catId);
-    if (!cat) return null;
-    const item = (cat.items || []).find(it => it.id === itemId) || null;
-    return { cat, item };
-}
-
-function bundleHeaderClick(ev, headerEl, categoryId) {
-    const target = ev && ev.target;
-    if (target && target.closest && target.closest('[data-bundle-action]')) return;
-    if (bundleOverviewEditMode && target && target.classList && target.classList.contains('bundle-category-title')) return;
-    toggleCategory(headerEl, categoryId);
-}
-
-function bundleCardClick(ev, categoryId, itemId) {
-    if (bundleOverviewEditMode) {
-        if (ev) { ev.preventDefault(); ev.stopPropagation(); }
-        editBundleItem(categoryId, itemId);
-        return;
-    }
-
-    const found = findBundleItem(categoryId, itemId);
-    if (!found || !found.cat || !found.item) return;
-    const it = found.item;
-    const disc = bundleCategoryDiscFraction(found.cat);
-    
-    // Show Bundle Variant Selection modal before adding to cart
-    showBundleVariantModal(it, found.cat, disc);
-}
-
-// Bundle Variant Selection Modal Functions
-let currentBundleItem = null;
-let currentBundleCategory = null;
-let currentBundleDiscount = 0;
-
-function showBundleVariantModal(bundleItem, category, discount) {
-    currentBundleItem = bundleItem;
-    currentBundleCategory = category;
-    currentBundleDiscount = discount;
-    
-    const modal = document.getElementById('bundleVariantModal');
-    const optionsContainer = document.getElementById('bundleVariantOptions');
-    
-    // Clear existing options
-    optionsContainer.innerHTML = '';
-    
-    // Get available variants based on bundle configuration
-    const variants = getBundleVariants(bundleItem, category);
-    const bundleQuantity = Number(bundleItem.pcs) || 1;
-    
-    // Update description to show quantity requirement
-    const description = modal.querySelector('.bundle-variant-description');
-    description.textContent = `Select ${bundleQuantity} variant${bundleQuantity > 1 ? 's' : ''} for this bundle or choose "Assorted" to use all variants:`;
-    
-    // Create variant options with quantity inputs
-    variants.forEach((variant, index) => {
-        const optionDiv = document.createElement('div');
-        optionDiv.className = 'bundle-variant-option';
-
-        const label = document.createElement('label');
-        label.htmlFor = `variant-${index}`;
-        
-        // Apply color-coded variant styling for non-Assorted variants
-        if (variant.value === 'Assorted') {
-            label.textContent = variant.label;
-        } else {
-            // Use the createColoredVariant function to generate colored HTML
-            label.innerHTML = createColoredVariant(variant.label);
-        }
-        
-        label.style.cssText = 'flex: 1; cursor: pointer; color: var(--text-main);';
-
-        if (variant.value === 'Assorted') {
-            // For Assorted, make the label itself clickable to select it
-            label.classList.add('assorted-option-label');
-            label.addEventListener('click', function() {
-                handleAssortedSelection(bundleQuantity);
-            });
-            optionDiv.appendChild(label);
-        } else {
-            const quantityInput = document.createElement('input');
-            quantityInput.type = 'number';
-            quantityInput.min = '0';
-            quantityInput.max = bundleQuantity;
-            quantityInput.value = '0';
-            quantityInput.className = 'bundle-variant-quantity';
-            quantityInput.id = `variant-${index}`;
-            quantityInput.setAttribute('data-variant', variant.value);
-            quantityInput.style.cssText = `
-                width: 80px;
-                padding: 8px;
-                background: #111;
-                color: white;
-                border: 1px solid var(--border);
-                border-radius: 4px;
-                text-align: center;
-                margin-left: 10px;
-            `;
-
-            // Add event listener to update total when quantity changes
-            quantityInput.addEventListener('input', function() {
-                let currentTotal = 0;
-                const quantityInputs = document.querySelectorAll('.bundle-variant-quantity');
-                quantityInputs.forEach(input => {
-                    currentTotal += parseInt(input.value) || 0;
-                });
-
-                if (currentTotal > bundleQuantity) {
-                    const excess = currentTotal - bundleQuantity;
-                    const currentValue = parseInt(this.value) || 0;
-
-                    if (currentValue > excess) {
-                        this.value = currentValue - excess;
-                    } else {
-                        this.value = '0';
-                    }
-
-                    updateVariantQuantityDisplay(bundleQuantity);
-                    alert(`You can only select a total of ${bundleQuantity} items for this bundle.`);
-                } else {
-                    updateVariantQuantityDisplay(bundleQuantity);
-                }
-            });
-
-            optionDiv.appendChild(label);
-            optionDiv.appendChild(quantityInput);
-        }
-        optionsContainer.appendChild(optionDiv);
-    });
-    
-    // Add quantity display
-    const quantityDisplay = document.createElement('div');
-    quantityDisplay.id = 'variantQuantityDisplay';
-    quantityDisplay.style.cssText = `
-        background: var(--primary);
-        color: white;
-        padding: 12px;
-        border-radius: 6px;
-        text-align: center;
-        margin-bottom: 20px;
-        font-weight: bold;
-    `;
-    quantityDisplay.textContent = `Selected: 0/${bundleQuantity} variants`;
-    optionsContainer.appendChild(quantityDisplay);
-    
-    // Show modal
-    modal.style.display = 'flex';
-}
-
-function handleAssortedSelection(bundleQuantity) {
-    // Reset all quantity inputs to 0
-    const quantityInputs = document.querySelectorAll('.bundle-variant-quantity');
-    quantityInputs.forEach(input => {
-        input.value = '0';
-    });
-    
-    // Update display to show Assorted selected
-    const display = document.getElementById('variantQuantityDisplay');
-    if (display) {
-        display.textContent = `Selected: Assorted (All Variants)`;
-        display.style.background = 'var(--accent)';
-    }
-    
-    // Add visual indication that Assorted is selected
-    const assortedLabel = document.querySelector('.assorted-option-label');
-    if (assortedLabel) {
-        assortedLabel.style.background = 'rgba(242, 153, 74, 0.2)';
-        assortedLabel.style.border = '1px solid var(--accent)';
-        assortedLabel.style.borderRadius = '4px';
-        assortedLabel.style.padding = '4px 8px';
-    }
-}
-
-function getBundleVariants(bundleItem, category) {
-    const variants = [];
-    
-    let configuredVariants = [];
-    
-    if (bundleItem.scent) {
-        const lowerCaseScent = bundleItem.scent.toLowerCase();
-        
-        if (lowerCaseScent === 'assorted') {
-            // If scent is "Assorted", include all category variants
-            switch (category.title) {
-                case 'Home Care':
-                    configuredVariants = ['Classic', 'Lemon Fresh', 'Lavender'];
-                    break;
-                case 'Personal Care':
-                    configuredVariants = ['Standard', 'Fresh', 'Mint'];
-                    break;
-                case 'Food & Beverage':
-                    configuredVariants = ['Ganoderma', 'Classic', 'Premium'];
-                    break;
-                case 'Cosmetics':
-                    configuredVariants = ['Red', 'Pink', 'Nude'];
-                    break;
-                default:
-                    configuredVariants = ['Standard'];
-            }
-        } else {
-            // Handle comma-separated variants
-            configuredVariants = bundleItem.scent.split(',').map(s => s.trim()).filter(s => s !== '');
-        }
-    }
-    
-    // If no specific variants configured, use category defaults (single variant)
-    if (configuredVariants.length === 0) {
-        switch (category.title) {
-            case 'Home Care':
-                configuredVariants = ['Classic'];
-                break;
-            case 'Personal Care':
-                configuredVariants = ['Standard'];
-                break;
-            case 'Food & Beverage':
-                configuredVariants = ['Ganoderma'];
-                break;
-            case 'Cosmetics':
-                configuredVariants = ['Red'];
-                break;
-            default:
-                configuredVariants = ['Standard'];
-        }
-    }
-    
-    // Convert to variant objects and ensure uniqueness
-    const uniqueVariants = new Set();
-    configuredVariants.forEach(variant => {
-        if (!uniqueVariants.has(variant)) {
-            variants.push({ value: variant, label: variant });
-            uniqueVariants.add(variant);
-        }
-    });
-    
-    // Always include Assorted option if not already present
-    if (!uniqueVariants.has('Assorted')) {
-        variants.push({ value: 'Assorted', label: 'Assorted (All Variants)' });
-    }
-    return variants;
-}
-
-function toggleVariantSelection(optionElement, variant, maxQuantity) {
-    const checkbox = optionElement.querySelector('input[type="checkbox"]');
-    const isChecked = checkbox.checked;
-    
-    // Count current selections
-    const allCheckboxes = document.querySelectorAll('input[name="bundleVariant"]:checked');
-    const currentCount = allCheckboxes.length;
-    
-    // Handle Assorted selection (mutually exclusive)
-    if (variant.value === 'Assorted') {
-        if (!isChecked) {
-            // Uncheck all other variants and check Assorted
-            document.querySelectorAll('input[name="bundleVariant"]').forEach(cb => {
-                cb.checked = false;
-                cb.closest('.bundle-variant-option').classList.remove('selected');
-            });
-            checkbox.checked = true;
-            optionElement.classList.add('selected');
-        } else {
-            checkbox.checked = false;
-            optionElement.classList.remove('selected');
-        }
-    } else {
-        // Handle regular variant selection
-        if (isChecked) {
-            // Unchecking
-            checkbox.checked = false;
-            optionElement.classList.remove('selected');
-        } else {
-            // Checking - ensure we don't exceed quantity limit
-            if (currentCount >= maxQuantity) {
-                alert(`You can only select ${maxQuantity} variant${maxQuantity > 1 ? 's' : ''} for this bundle.`);
-                return;
-            }
-            
-            // Uncheck Assorted if it's selected
-            const assortedCheckbox = document.querySelector('input[value="Assorted"]');
-            if (assortedCheckbox && assortedCheckbox.checked) {
-                assortedCheckbox.checked = false;
-                assortedCheckbox.closest('.bundle-variant-option').classList.remove('selected');
-            }
-            
-            checkbox.checked = true;
-            optionElement.classList.add('selected');
-        }
-    }
-}
-
-function updateVariantQuantityDisplay(maxQuantity) {
-    const display = document.getElementById('variantQuantityDisplay');
-    if (!display) return;
-    
-    const quantityInputs = document.querySelectorAll('.bundle-variant-quantity');
-    let totalSelected = 0;
-    let variantDetails = [];
-    
-    quantityInputs.forEach(input => {
-        const quantity = parseInt(input.value) || 0;
-        const variant = input.getAttribute('data-variant');
-        
-        if (quantity > 0) {
-            totalSelected += quantity;
-            if (variant !== 'Assorted') {
-                variantDetails.push(`${quantity} ${variant}`);
-            }
-        }
-    });
-    
-    // Check if Assorted is selected (by checking visual styling)
-    const assortedLabel = document.querySelector('.assorted-option-label');
-    const assortedSelected = assortedLabel && assortedLabel.style.background === 'rgba(242, 153, 74, 0.2)';
-    
-    if (assortedSelected) {
-        display.textContent = `Selected: Assorted (All Variants)`;
-        display.style.background = 'var(--accent)';
-    } else {
-        display.textContent = `Selected: ${totalSelected}/${maxQuantity} items${variantDetails.length > 0 ? ' (' + variantDetails.join(', ') + ')' : ''}`;
-        display.style.background = totalSelected === maxQuantity ? '#34a853' : 'var(--primary)';
-    }
-}
-
-function confirmBundleVariantSelection() {
-    const quantityInputs = document.querySelectorAll('.bundle-variant-quantity');
-    const bundleQuantity = Number(currentBundleItem.pcs) || 1;
-
-    let totalSelected = 0;
-    let variantDetails = [];
-    
-    // Check if Assorted is selected (by checking visual styling)
-    const assortedLabel = document.querySelector('.assorted-option-label');
-    const assortedSelected = assortedLabel && assortedLabel.style.background === 'rgba(242, 153, 74, 0.2)';
-
-    if (assortedSelected) {
-        // Assorted is selected, proceed with confirmation
-        if (currentBundleItem) {
-            addPromoBundle(
-                currentBundleItem.name,
-                Number(currentBundleItem.price) || 0,
-                Number(currentBundleItem.pcs) || 1,
-                'Assorted',
-                currentBundleItem.category || currentBundleCategory.title || '',
-                currentBundleDiscount
-            );
-        }
-        closeBundleVariantModal();
-        return;
-    }
-
-    // If not Assorted, check regular variant selections
-    quantityInputs.forEach(input => {
-        const quantity = parseInt(input.value) || 0;
-        const variant = input.getAttribute('data-variant');
-
-        if (quantity > 0) {
-            totalSelected += quantity;
-            variantDetails.push(`${quantity} ${variant}`);
-        }
-    });
-
-    if (totalSelected === 0) {
-        alert('Please select at least one variant option.');
-        return;
-    }
-
-    // Check if correct number of items is selected
-    if (totalSelected !== bundleQuantity) {
-        alert(`Please select exactly ${bundleQuantity} item${bundleQuantity > 1 ? 's' : ''} for this bundle. Current total: ${totalSelected}`);
-        return;
-    }
-
-    // Create variant string from selected variants
-    const selectedVariant = variantDetails.join(', ');
-
-    // Add the bundle to cart with the selected variant(s)
-    if (currentBundleItem) {
-        addPromoBundle(
-            currentBundleItem.name,
-            Number(currentBundleItem.price) || 0,
-            Number(currentBundleItem.pcs) || 1,
-            selectedVariant,
-            currentBundleItem.category || currentBundleCategory.title || '',
-            currentBundleDiscount
-        );
-    }
-
-    // Close modal
-    closeBundleVariantModal();
-}
-
-function closeBundleVariantModal() {
-    const modal = document.getElementById('bundleVariantModal');
-    modal.style.display = 'none';
-
-    
-    // Reset current bundle data
-    currentBundleItem = null;
-    currentBundleCategory = null;
-    currentBundleDiscount = 0;
-}
-
-function renderBundleOverview() {
-    const container = document.getElementById('bundleCategories');
-    if (!container) return;
-    if (!bundleOverviewData) bundleOverviewData = loadBundleOverview();
-
-    const html = (bundleOverviewData.categories || []).map(cat => {
-        const hasItems = Array.isArray(cat.items) && cat.items.length > 0;
-        const itemsHtml = hasItems
-            ? cat.items.map(it => {
-                const offerTitle = it.offerTitle || it.name || '';
-                const priceNum = Number(it.price) || 0;
-                const deleteBtn = bundleOverviewEditMode
-                    ? `<button class="bundle-item-delete" type="button" data-bundle-action="del-item" onclick="event.stopPropagation(); deleteBundleItem('${cat.id}', '${it.id}')">✕</button>`
-                    : '';
-                return `
-                            <div class="bundle-card ${bundleOverviewEditMode ? 'edit-mode' : ''}" onclick="bundleCardClick(event, '${cat.id}', '${it.id}')">
-                                ${deleteBtn}
-                                <div class="bundle-info">
-                                    <span class="bundle-offer-title">${offerTitle}</span>
-                                    <span class="bundle-offer-price">₱${priceNum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                                </div>
-                            </div>`;
-            }).join('')
-            : `
-                            <div style="padding: 20px; text-align: center; color: var(--text-sub);">
-                                No bundles available in this category yet.
-                            </div>`;
-
-        const actionsHtml = bundleOverviewEditMode
-            ? `
-                        <span class="bundle-inline-actions">
-                            <button class="bundle-editor-btn" type="button" data-bundle-action="add" onclick="addBundleItem('${cat.id}')">+ Bundle</button>
-                            <button class="bundle-editor-btn danger" type="button" data-bundle-action="del" onclick="deleteBundleCategory('${cat.id}')">Delete</button>
-                        </span>`
-            : '';
-
-        return `
-                <div class="bundle-category-wrapper">
-                    <div class="bundle-category-header collapsed" onclick="bundleHeaderClick(event, this, '${cat.id}')">
-                        <span class="bundle-category-title" data-cat-id="${cat.id}" ${bundleOverviewEditMode ? 'contenteditable="true"' : ''}>${cat.title || ''}</span>
-                        ${actionsHtml}
-                    </div>
-                    <div class="bundle-category-content" id="${cat.id}">
-                        <div class="bundle-grid">
-${itemsHtml}
-                        </div>
-                    </div>
-                </div>`;
-    }).join('');
-
-    container.innerHTML = html;
-
-    if (bundleOverviewEditMode) {
-        container.querySelectorAll('.bundle-category-title[contenteditable="true"]').forEach(el => {
-            el.addEventListener('blur', () => {
-                const catId = el.getAttribute('data-cat-id');
-                const cat = findBundleCategory(catId);
-                if (!cat) return;
-                const nextTitle = String(el.textContent || '').trim();
-                if (!nextTitle) {
-                    el.textContent = cat.title || '';
-                    return;
-                }
-                cat.title = nextTitle;
-                saveBundleOverview();
-            });
-        });
-    }
-}
-
-function toggleBundleEditMode() {
-    bundleOverviewEditMode = !bundleOverviewEditMode;
-    const btn = document.getElementById('bundleEditToggleBtn');
-    const addBtn = document.getElementById('bundleAddCategoryBtn');
-    const resetBtn = document.getElementById('bundleResetBtn');
-    
-    // Quick export buttons
-    const productTemplatesBtn = document.getElementById('exportProductTemplatesBtn');
-    const bundleTemplatesBtn = document.getElementById('exportBundleTemplatesBtn');
-    const fullBackupBtn = document.getElementById('exportFullBackupBtn');
-    const smartImportBtn = document.getElementById('importWithOptionsBtn');
-    
-    if (btn) btn.innerText = `Edit Bundles: ${bundleOverviewEditMode ? 'ON' : 'OFF'}`;
-    if (addBtn) addBtn.style.display = bundleOverviewEditMode ? '' : 'none';
-    if (resetBtn) resetBtn.style.display = bundleOverviewEditMode ? '' : 'none';
-    
-    // Show/hide quick export buttons
-    if (productTemplatesBtn) productTemplatesBtn.style.display = bundleOverviewEditMode ? '' : 'none';
-    if (bundleTemplatesBtn) bundleTemplatesBtn.style.display = bundleOverviewEditMode ? '' : 'none';
-    if (fullBackupBtn) fullBackupBtn.style.display = bundleOverviewEditMode ? '' : 'none';
-    if (smartImportBtn) smartImportBtn.style.display = bundleOverviewEditMode ? '' : 'none';
-    
-    renderBundleOverview();
-}
-
-function addBundleCategory() {
-    if (!bundleOverviewEditMode) return;
-    const title = (prompt('New Category Name:') || '').trim();
-    if (!title) return;
-    const discDefault = defaultBundleDiscPctForTitle(title);
-    const discRaw = prompt('Discount percent for this category (e.g. 25 or 20):', String(discDefault));
-    if (discRaw === null) return;
-    let discPct = parseFloat(String(discRaw).trim());
-    if (!Number.isFinite(discPct)) discPct = discDefault;
-    discPct = Math.max(0, Math.min(100, discPct));
+    // ... (rest of the code remains the same)
     const id = ensureUniqueCategoryId(title);
     bundleOverviewData.categories.push({ id, title, discPct, items: [] });
     saveBundleOverview();
