@@ -143,18 +143,6 @@
         (function() {
             // Always allow access - domain check completely disabled
             return; // Skip all domain checking
-            
-            // Domain check (currently disabled) - would include:
-            var allowedDomains = [
-                'localhost',
-                '127.0.0.1',
-                'github.io',
-                '.github.io',
-                'github.com',
-                '.github.com',
-                '.netlify.app'
-            ];
-            
             // Anti-bot check
             if (navigator.webdriver || window._phantom || window.__nightmare) {
                 document.documentElement.innerHTML = '';
