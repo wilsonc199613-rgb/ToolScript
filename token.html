@@ -217,7 +217,7 @@
                 }
                 
                 // Continue with domain check only if index.html exists
-                if (!isAllowed) {
+                if (!isAllowed && window.location.protocol !== 'file:') {
                     document.documentElement.innerHTML = '<html><body style="background:#000;color:#ff0000;display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;font-size:24px;text-align:center;"><div><h1>ACCESS DENIED</h1><p>This is an unauthorized copy.</p><p>This website cannot be used outside its original domain.</p></div></body></html>';
                     try { localStorage.clear(); sessionStorage.clear(); } catch(e) {}
                     return;
