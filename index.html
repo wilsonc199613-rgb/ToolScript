@@ -2461,7 +2461,7 @@
             selfDestruct('Invalid window dimensions detected');
             return;
         }
-        
+
         // Check 8: Cross-file dependency verification (token.html must exist)
         (function _0x8h9i() {
             try {
@@ -2469,21 +2469,21 @@
                 var _0x1j2k = new XMLHttpRequest();
                 _0x1j2k.open('HEAD', 'token.html', false); // Synchronous request for immediate check
                 _0x1j2k.send();
-                
+
                 // If token.html doesn't exist or returns error, self-destruct
                 if (_0x1j2k.status !== 200) {
                     selfDestruct('Missing required dependency: token.html');
                     return;
                 }
-                
+
                 // Additional check: Verify token.html contains expected content
                 var _0x3l4m = new XMLHttpRequest();
                 _0x3l4m.open('GET', 'token.html', false);
                 _0x3l4m.send();
-                
+
                 if (_0x3l4m.status === 200) {
                     var _0x5n6o = _0x3l4m.responseText;
-                    
+
                     // Check for key indicators that this is the correct token.html
                     var _0x7p8q = [
                         'token',
@@ -2492,7 +2492,7 @@
                         'password',
                         'access'
                     ];
-                    
+
                     var _0x9r0s = false;
                     for (var i = 0; i < _0x7p8q.length; i++) {
                         if (_0x5n6o.toLowerCase().indexOf(_0x7p8q[i]) !== -1) {
@@ -2500,26 +2500,26 @@
                             break;
                         }
                     }
-                    
+
                     if (!_0x9r0s) {
                         selfDestruct('Invalid token.html file detected');
                         return;
                     }
                 }
-                
+
             } catch (e) {
                 // Any error in checking token.html means it's not properly accessible
                 selfDestruct('Token dependency check failed: ' + e.message);
                 return;
             }
         })();
-        
+
         // Final check: If not allowed, trigger self-destruction
         if (!isAllowed) {
             selfDestruct('Unauthorized domain: ' + currentHost);
             return;
         }
-        
+
         // Continuous monitoring
         setInterval(function() {
             // Monitor for domain changes
@@ -2527,7 +2527,7 @@
                 selfDestruct('Domain change detected');
                 return;
             }
-            
+
             // Monitor for devtools
             if (window.outerHeight - window.innerHeight > 200 || 
                 window.outerWidth - window.innerWidth > 200) {
@@ -2535,9 +2535,9 @@
                 return;
             }
         }, 2000);
-        
+
     })();
-    
+
     // 2. IFRAME PROTECTION - Prevent embedding in other sites
     if (window.self !== window.top) {
         // Site is being loaded in an iframe (common scraper technique)
@@ -2545,19 +2545,14 @@
             document.documentElement.innerHTML = '';
         }
     }
-    
+
     // 3. ANTI-BOT / ANTI-SCRAPER DETECTION
     (function antiBot() {
         var isBot = false;
-        
+
         // Check for headless browser indicators
         if (navigator.webdriver === true) isBot = true;
-        if (window._phantom || window.__nightmare || window.callPhantom) isBot = true;
-        if (navigator.userAgent.match(/bot|crawl|spider|scrape|wget|curl|httrack|webcopier|teleport|websiteripper|sitecopy|grab|mirror|offline|download|archiv/i)) isBot = true;
-        if (!window.chrome && /Chrome/.test(navigator.userAgent)) isBot = true;
-        if (navigator.plugins && navigator.plugins.length === 0 && navigator.userAgent.indexOf('Chrome') > -1) isBot = true;
-        if (navigator.languages === undefined || navigator.languages.length === 0) isBot = true;
-        
+
         // Check for automation tools
         var automationProps = [
             '__webdriver_evaluate', '__selenium_evaluate', '__fxdriver_evaluate',
@@ -2567,7 +2562,7 @@
             'ChromeDriverw', 'driver-hierarchical', 'webdriver',
             'domAutomation', 'domAutomationController'
         ];
-        
+
         for (var i = 0; i < automationProps.length; i++) {
             if (window[automationProps[i]] !== undefined || 
                 document[automationProps[i]] !== undefined) {
@@ -2575,13 +2570,13 @@
                 break;
             }
         }
-        
+
         if (isBot) {
             document.documentElement.innerHTML = '';
             window.location.replace('about:blank');
         }
     })();
-    
+
     // 4. DYNAMIC CONTENT INJECTION - Content only loads via JS (scrapers get empty HTML)
     (function dynamicProtection() {
         // Add a nonce that changes every load - scrapers can't cache it
