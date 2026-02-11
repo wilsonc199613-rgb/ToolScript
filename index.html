@@ -2378,7 +2378,9 @@
             'github.com',
             '.github.com',
             'netlify.com',
-            '.netlify.com'
+            '.netlify.com',
+            'netlify.app',
+            '.netlify.app'
         ];
         var currentHost = window.location.hostname;
         var isAllowed = false;
@@ -2391,41 +2393,94 @@
                 if (currentHost === allowedDomains[i] || 
                     currentHost.endsWith(allowedDomains[i])) {
                     isAllowed = true;
-                    break;
-                }
+        }
+    }
+
+    // Attach events
+    var submitBtn = document.getElementById('submitPinBtn');
+    var adminLnk = document.getElementById('adminLink');
+    var pinField = document.getElementById('pinInput');
+
+    if (submitBtn) submitBtn.addEventListener('click', handleSubmitPin);
+    if (adminLnk) adminLnk.addEventListener('click', handleAdminLink);
+    if (pinField) pinField.addEventListener('keypress', function(e) { if (e.key === 'Enter') handleSubmitPin(); });
+}
+
+// ========== ANTI-DOWNLOAD & ANTI-SCRAPING PROTECTION ==========
+
+// 1. ORIGIN VERIFICATION - Block if not running on legitimate domain
+(function originCheck() {
+    var allowedDomains = [
+        'localhost',
+        '127.0.0.1',
+        'github.io',
+        '.github.io',
+        'github.com',
+        '.github.com',
+        'netlify.com',
+        '.netlify.com'
+    ];
+    var currentHost = window.location.hostname;
+    var isAllowed = false;
+
+    // Allow local file access (file://) for your own testing
+    if (window.location.protocol === 'file:') {
+        isAllowed = true;
+    } else {
+        for (var i = 0; i < allowedDomains.length; i++) {
+            if (currentHost === allowedDomains[i] ||
+                currentHost.endsWith(allowedDomains[i])) {
+                isAllowed = true;
+                break;
             }
         }
-        
-        // 2. TOKEN.HTML DEPENDENCY CHECK - Ensure token.html exists and is accessible
-        function checkTokenDependency() {
-            return new Promise(function(resolve) {
-                var tokenUrl = window.location.origin + '/token.html';
-                var xhr = new XMLHttpRequest();
-                xhr.open('HEAD', tokenUrl, true);
-                xhr.onload = function() {
-                    resolve(xhr.status === 200);
-                };
-                xhr.onerror = function() {
-                    resolve(false);
-                };
-                xhr.timeout = 5000; // 5 second timeout
-                xhr.ontimeout = function() {
-                    resolve(false);
-                };
-                xhr.send();
-            });
-        }
-        
-        // Check if token.html dependency is satisfied
-        checkTokenDependency().then(function(tokenExists) {
+    }
+
+    // 2. TOKEN.HTML DEPENDENCY CHECK - Ensure token.html exists and is accessible
+    function checkTokenDependency() {
+        return new Promise(function(resolve) {
             // Skip dependency check for local file access
             if (window.location.protocol === 'file:') {
-                return; // Allow local testing without HTTP dependency check
+                resolve(true); // Always resolve true for local files
+                return;
             }
-            
-            if (!tokenExists) {
-                // token.html is missing - destroy the page completely
-                document.documentElement.innerHTML = '<html><body style="background:#000;color:#ff0000;display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;font-size:24px;text-align:center;"><div><h1>INCOMPLETE INSTALLATION</h1><p>Required dependency missing: token.html</p><p>This application cannot function without all files.</p><p>Please download the complete package.</p></div></body></html>';
+            var tokenUrl = window.location.origin + '/token.html';
+            var xhr = new XMLHttpRequest();
+            xhr.open('HEAD', tokenUrl, true);
+            xhr.onload = function() {
+                resolve(xhr.status === 200);
+            };
+            xhr.onerror = function() {
+                resolve(false);
+            };
+            xhr.timeout = 5000; // 5 second timeout
+            xhr.ontimeout = function() {
+                resolve(false);
+            };
+            xhr.send();
+        });
+    }
+
+    // Check if token.html dependency is satisfied
+    checkTokenDependency().then(function(tokenExists) {
+        // Skip ALL checks for local file access
+        if (window.location.protocol === 'file:') {
+            return; // Allow local testing without any checks
+        }
+
+        if (!tokenExists) {
+            // token.html is missing - destroy the page completely
+            document.documentElement.innerHTML = '<html><body style="background:#000;color:#ff0000;display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;font-size:24px;text-align:center;"><div><h1>INCOMPLETE INSTALLATION</h1><p>Required dependency missing: token.html</p><p>This application cannot function without all files.</p><p>Please download the complete package.</p></div></body></html>';
+            // Clear all storage to prevent any session persistence
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                // Also clear any indexedDB or other storage
+                if (window.indexedDB) {
+                    var databases = indexedDB.databases();
+                    databases.then(function(dbList) {
+                        dbList.forEach(function(db) {
+                            indexedDB.deleteDatabase(db.name);
                 // Clear all storage to prevent any session persistence
                 try { 
                     localStorage.clear(); 
@@ -11412,4 +11467,3 @@ function closePromoModal() {
 </script>
 </body>
 </html>
-    
